@@ -1,23 +1,54 @@
 import React from 'react'
 import { Text, SafeAreaView, StyleSheet, ScrollView, StatusBar, View, Alert, TouchableOpacity } from 'react-native'
 import CheckBox from './CheckBox';
-import { Icon } from 'react-native-elements';
-
+import { Icon } from 'react-native-elements'
+import Data from '../dummyTodos'
+import 'react-native-get-random-values';
+import { v4 as uuidv4 } from 'uuid';
 
 function TodoApp() {
-    const [checkboxState, setCheckboxState] = React.useState(false);
-    
+    const [todo, setTodo] = React.useState(appStart());
+
+    function appStart() {
+        newTodo = []
+        Data.map(item => {
+            const id = uuidv4()
+            newTodo.push({...item, id:id})
+        })
+        return newTodo
+    }
     function handleDelete(id) {
-        console.log(`Todo with id: ${id} has been deleted.`)
+        newTodo = []
+        todo.map(item => {
+            if (item.id != id) {
+                newTodo.push(item)
+            }
+        })
+        setTodo(newTodo)
     }
 
-    function handlePress() {
-        setCheckboxState(prevState => !prevState)
+    function handlePress(id) {
+        setTodo(prevTodo => {
+            retrun(prevTodo.map(item => {
+                return(item.id === id ? {...item, checkBox: !item.checkBox} : item)
+            }))
+        })
     }
 
     function addTodo() {
         console.log("New Todo Added")
     }
+
+    const todos = todo.map(item => {
+        return (
+            <CheckBox key={item.id} 
+            isItChecked={item.checkBox} 
+            handleDelete={()=> handleDelete(item.id)} 
+            text={item.text} 
+            handleOnPress={()=> handlePress(item.id)}
+            />
+        )
+    })
 
     return (
       <SafeAreaView style={styles.AppContainer}>
@@ -35,24 +66,7 @@ function TodoApp() {
             </TouchableOpacity>
         </View>
         <ScrollView style={styles.scrollview}>
-            <CheckBox id={1} 
-            isItChecked={false} 
-            handleDelete={handleDelete} 
-            text={"Hello"} 
-            handleOnPress={handlePress}
-            />
-            <CheckBox id={2} 
-            isItChecked={false} 
-            handleDelete={handleDelete} 
-            text={"Hi"} 
-            handleOnPress={handlePress}
-            />
-            <CheckBox id={3} 
-            isItChecked={false} 
-            handleDelete={handleDelete} 
-            text={"Hola"} 
-            handleOnPress={handlePress}
-            />
+            {todos}
         </ScrollView>
       </SafeAreaView>
     );
