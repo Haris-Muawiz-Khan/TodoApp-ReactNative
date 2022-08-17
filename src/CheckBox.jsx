@@ -12,7 +12,11 @@ const CheckBox = (props) => {
             text={props.text}
         />
         <View style={styles.button}>
-            <Button title='Delete' onPress={() => props.handleDelete(props.id)}/>
+            <Button 
+            title='Delete' 
+            onPress={() => props.handleDelete(props.id)}
+            color={'#FF1E00'}
+            />
         </View>
     </View>
   )

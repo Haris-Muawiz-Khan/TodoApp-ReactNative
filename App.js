@@ -1,11 +1,19 @@
-import { StatusBar } from 'expo-status-bar';
-import { StyleSheet, Text, View, SafeAreaView } from 'react-native';
-import TodoApp from './src/TodoApp'
+import { SafeAreaView, StyleSheet } from 'react-native'
+import HomeScreen from './src/HomeScreen'
+import { NavigationContainer } from '@react-navigation/native';
+import { createNativeStackNavigator } from '@react-navigation/native-stack';
+import AddTodo from './src/AddTodo'
+
+const Stack = createNativeStackNavigator();
+
 export default function App() {
   return (
-    <SafeAreaView style={styles.container}>
-      <TodoApp />
-    </SafeAreaView>
+    <NavigationContainer>
+      <Stack.Navigator>
+        <Stack.Screen name="Todo APP" component={HomeScreen} />
+        <Stack.Screen name="Add Todo" component={AddTodo} />
+      </Stack.Navigator>
+    </NavigationContainer>
   );
 }
 

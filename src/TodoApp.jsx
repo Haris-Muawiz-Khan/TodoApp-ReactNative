@@ -1,13 +1,26 @@
 import React from 'react'
-import { Text, SafeAreaView, StyleSheet, ScrollView, StatusBar, View, Alert, TouchableOpacity } from 'react-native'
+import { Text, SafeAreaView, StyleSheet, ScrollView, StatusBar, View, TouchableOpacity } from 'react-native'
 import CheckBox from './CheckBox';
 import { Icon } from 'react-native-elements'
 import Data from '../dummyTodos'
 import 'react-native-get-random-values';
 import { v4 as uuidv4 } from 'uuid';
+import { useState, useEffect } from 'react'
+import { useRoute } from '@react-navigation/native'
 
-function TodoApp() {
-    const [todo, setTodo] = React.useState(appStart());
+function TodoApp({ navigation }) {
+    const [todo, setTodo] = useState(appStart());
+    const route = useRoute()
+
+    useEffect(() => {
+        if (route.params?.params.text) {
+            newId = uuidv4()
+            newTodo = []
+            todo.map(item => newTodo.push(item))
+            newTodo.push({text: route.params.params.text, checkBox: route.params.params.check, id: newId})
+            setTodo(newTodo)
+        }
+    }, [route.params]);
 
     function appStart() {
         newTodo = []
@@ -17,6 +30,7 @@ function TodoApp() {
         })
         return newTodo
     }
+
     function handleDelete(id) {
         newTodo = []
         todo.map(item => {
@@ -36,7 +50,7 @@ function TodoApp() {
     }
 
     function addTodo() {
-        console.log("New Todo Added")
+        navigation.navigate('Add Todo')
     }
 
     const todos = todo.map(item => {
@@ -52,11 +66,6 @@ function TodoApp() {
 
     return (
       <SafeAreaView style={styles.AppContainer}>
-        <View style={styles.header}>
-            <Text style={styles.headerText}>
-                TODO APP
-            </Text>
-        </View>
         <View style={styles.addTodoContainer}> 
             <TouchableOpacity onPress={addTodo}>
                 <View style={styles.addTodos}>
