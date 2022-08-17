@@ -65,9 +65,17 @@ function TodoApp() {
                 </View>
             </TouchableOpacity>
         </View>
-        <ScrollView style={styles.scrollview}>
-            {todos}
-        </ScrollView>
+        {
+            todos.length > 0 ? 
+            <ScrollView style={styles.scrollview}>
+                { todos }
+            </ScrollView>
+            :
+            <View style={styles.emptyTodo}>
+                <Text style={styles.headerText}>Please Add a Todo</Text>
+            </View>
+        }
+        
       </SafeAreaView>
     );
   };
@@ -113,7 +121,12 @@ function TodoApp() {
         width: '100%',
         justifyContent: 'center',
         alignItems: 'center',
-    }
+    },
+    emptyTodo: {
+        flex: 1,
+        alignItems: 'center',
+        justifyContent: 'center',
+    },
   });
   
 
